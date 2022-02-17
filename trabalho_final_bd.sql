@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS crispim;
 
 -- CRIAÇÃO DO BANCO DE DADOS
 
-CREATE DATABASE crispim;
+CREATE DATABASE crispim DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 USE crispim;
 
@@ -243,3 +243,28 @@ INSERT INTO produto(nome_produto, preco_produto, categoria_id) VALUES ('SKOL LAT
 INSERT INTO cliente(nome_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('DIOGO MENESES DE FRANÇA', '34697928873', 'RUA MATO GROSSO', '1050', 1);
 INSERT INTO cliente(nome_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('CARLOS EDUARDO DE FRANÇA', '04348706921', 'RUA MATO GROSSO', '1050', 1);
 INSERT INTO cliente(nome_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('ARACELES DE MENESES', '26661568852', 'RUA DOM PEDRO I', '70 C', 10);
+
+-- CRIANDO VENDAS
+
+-- DIOGO COMPROU 2 HOT DOG E UMA COCA 600ML
+INSERT INTO venda(cliente_id) VALUES (1);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (1, 2, 1);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (49, 1, 1);
+
+-- CARLOS EDUARDO COMPROU 1 X-BACON E UMA COCA 2L
+INSERT INTO venda(cliente_id) VALUES (2);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (10, 1, 2);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (51, 1, 2);
+
+-- ARACELES COMPROU 2 X-BACON E 1 COCA GARRAFINHA
+INSERT INTO venda(cliente_id) VALUES (3);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (10, 2, 3);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (47, 1, 2);
+
+-- PAGAMENTO
+
+
+
+
+
+
