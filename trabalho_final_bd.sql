@@ -108,7 +108,7 @@ CREATE TABLE pagamento(
 -- ESTADOS
 
 INSERT INTO estado (nome_estado, sigla_estado) VALUES ('PARANÁ', 'PR');
-INSERT INTO estado (nome_estado, sigla_estado) VALUES ('RIO GRANDO DO SUL', 'RS');
+INSERT INTO estado (nome_estado, sigla_estado) VALUES ('RIO GRANDE DO SUL', 'RS');
 INSERT INTO estado (nome_estado, sigla_estado) VALUES ('SANTA CATARINA', 'SC');
 INSERT INTO estado (nome_estado, sigla_estado) VALUES ('ESPIRITO SANTO', 'ES');
 INSERT INTO estado (nome_estado, sigla_estado) VALUES ('SÃO PAULO', 'SP');
@@ -146,7 +146,7 @@ INSERT INTO categoria_produto (nome_categoria_produto) VALUES ('BEBIDA');
 
 INSERT INTO cidade(nome_cidade, estado_id) VALUES ('TERRA RICA', 1);
 INSERT INTO cidade(nome_cidade, estado_id) VALUES ('PARANAVAÍ', 1);
-INSERT INTO cidade(nome_cidade, estado_id) VALUES ('MARGINÁ', 1);
+INSERT INTO cidade(nome_cidade, estado_id) VALUES ('MARINGÁ', 1);
 INSERT INTO cidade(nome_cidade, estado_id) VALUES ('CURITIBA', 1);
 INSERT INTO cidade(nome_cidade, estado_id) VALUES ('PORTO ALEGRE', 2);
 INSERT INTO cidade(nome_cidade, estado_id) VALUES ('FLORIANÓPOLIS', 3);
@@ -273,17 +273,17 @@ INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (28, 1, 
 INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (56, 2, 4);
 
 -- JOÃO COMPROU UMA PORÇÃO DE FILÉ DE TILÁPIA E 3 CERVEJAS SKOL LATA
-INSERT INTO venda(cliente_id) VALUES (3);
+INSERT INTO venda(cliente_id) VALUES (5);
 INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (33, 1, 5);
 INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (56, 3, 5);
 
 -- ANDRÉ LUIZ COMPROU 2 X-CALABRESA E 1 COCA 2L
-INSERT INTO venda(cliente_id) VALUES (3);
+INSERT INTO venda(cliente_id) VALUES (4);
 INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (11, 2, 6);
 INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (51, 1, 6);
 
 -- ROSA MARIA COMPROU UM X-FILÉ MIGNON E UM GUARANÁ GARRAFINHA
-INSERT INTO venda(cliente_id) VALUES (3);
+INSERT INTO venda(cliente_id) VALUES (7);
 INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (17, 2, 3);
 INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (48, 1, 2);
 
@@ -344,14 +344,14 @@ SELECT sigla_estado
     INNER JOIN cliente ON cliente.id_cliente = venda.cliente_id
     INNER JOIN cidade ON cliente.cidade_id = cidade.id_cidade
     INNER JOIN estado ON estado.id_estado = cidade.estado_id
-    WHERE venda.id_venda IS NOT NULL AND venda.data_e_hora_venda 
+    WHERE venda.id_venda IS NOT NULL AND venda.data_e_hora_venda; 
 
     
 
 -- TRÊS EXEMPLOS DE CONSULTAS UTILIZANDO FUNÇÕES
 
 -- 1º - exibe o valor total das vendas feitas no estado de São Paulo e o nome do estado.
-SELECT nome_estado, sum(preco_produto) 'TOTAL VENDAS'
+SELECT nome_estado, sum(preco_produto) 'TOTAL VENDAS SP'
     FROM venda
     INNER JOIN item_venda ON item_venda.venda_id = venda.id_venda
     INNER JOIN produto ON item_venda.produto_id = produto.id_produto
@@ -360,12 +360,18 @@ SELECT nome_estado, sum(preco_produto) 'TOTAL VENDAS'
     INNER JOIN estado ON cidade.estado_id = estado.id_estado
     WHERE estado.nome_estado = "SÃO PAULO";
 
+-- 2º - exibe juntos o nome da cidade,estado e sigla das cidades e estados da região sul do Brasil
+
+SELECT CONCAT(nome_cidade, '--',nome_estado,'--', sigla_estado) 'CIDADES DA REGIÃO SUL'
+    FROM cidade
+    INNER JOIN estado ON cidade.estado_id = estado.id_estado
+    WHERE estado.nome_estado IN('PARANÁ', 'SANTA CATARINA', 'RIO GRANDE DO SUL');
+
+-- exibe a média de venda por cliente dentre todas as vendas do país.
 
 
-
-
-
-
-
-
-
+SELECT id_cliente, nome_cliente, (preco_produto*quantidade_produto)
+	FROM venda
+    INNER JOIN item_venda ON item_venda.venda_id = venda.id_venda
+    INNER JOIN produto ON item_venda.produto_id = produto.id_produto
+    INNER JOIN cliente ON venda.cliente_id = cliente.id_cliente;
