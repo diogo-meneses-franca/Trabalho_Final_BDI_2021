@@ -58,6 +58,7 @@ CREATE TABLE cliente(
     id_cliente INT NOT NULL AUTO_INCREMENT UNIQUE
     ,nome_cliente VARCHAR(200) NOT NULL
     ,cpf_cliente VARCHAR(20) NOT NULL UNIQUE
+    ,telefone_cliente VARCHAR(20) NOT NULL
     ,endereco_cliente VARCHAR(200) NOT NULL
     ,endereco_numero VARCHAR(10) NOT NULL
     ,data_cadastro_cliente DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -241,9 +242,13 @@ INSERT INTO produto(nome_produto, preco_produto, categoria_id) VALUES ('SUCO PRA
 INSERT INTO produto(nome_produto, preco_produto, categoria_id) VALUES ('SUCO PRATS 1L', 9.00, 5);
 INSERT INTO produto(nome_produto, preco_produto, categoria_id) VALUES ('SKOL LATA 350ML', 4.00, 6);
 
-INSERT INTO cliente(nome_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('DIOGO MENESES DE FRANÇA', '12345678910', 'RUA INDAIAL ', '1230', 1);
-INSERT INTO cliente(nome_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('CARLOS EDUARDO DE FRANÇA', '12345678911', 'RUA MATO GROSSO', '1050', 1);
-INSERT INTO cliente(nome_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('ARACELES DE MENESES', '12345678912', 'RUA DOM PEDRO I', '70 C', 10);
+INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('DIOGO MENESES DE FRANÇA', "44991162891", '12345678910', 'RUA INDAIAL ', '1230', 1);
+INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('CARLOS EDUARDO DE FRANÇA', "44991768883", '12345678911', 'RUA MATO GROSSO', '1050', 1);
+INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('ARACELES DE MENESES', "18988022202", '12345678912', 'RUA DOM PEDRO I', '70 C', 10);
+INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('ANDRÉ LUIZ DE ALMEIDA', "47991584678", '12345678913', 'RUA PERNAMBUCO', '257', 7);
+INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('JOÃO DOS SANTOS', "11994755812", '12345678914', 'RUA SERGIPE', '479', 9);
+INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('IRENE FERRAZ', "11987541759", '12345678915', 'AVENIDA JOSÉ BONIFÁCIO', '1630', 9);
+INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('ROSA MARIA DOS SANTOS', "1154574832", '12345678916', 'RUA SANTO ANTONIO', '1326', 9);
 
 -- CRIANDO VENDAS
 
@@ -260,9 +265,104 @@ INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (51, 1, 
 -- ARACELES COMPROU 2 X-BACON E 1 COCA GARRAFINHA
 INSERT INTO venda(cliente_id) VALUES (3);
 INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (10, 2, 3);
-INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (47, 1, 2);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (47, 1, 3);
 
--- PAGAMENTO
+-- IRENE COMPROU UMA PORÇÃO DE BATATA COM QUEIJO E BACON E 2 CERVEJAS SKOL LATA
+INSERT INTO venda(cliente_id) VALUES (6);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (28, 1, 4);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (56, 2, 4);
+
+-- JOÃO COMPROU UMA PORÇÃO DE FILÉ DE TILÁPIA E 3 CERVEJAS SKOL LATA
+INSERT INTO venda(cliente_id) VALUES (3);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (33, 1, 5);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (56, 3, 5);
+
+-- ANDRÉ LUIZ COMPROU 2 X-CALABRESA E 1 COCA 2L
+INSERT INTO venda(cliente_id) VALUES (3);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (11, 2, 6);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (51, 1, 6);
+
+-- ROSA MARIA COMPROU UM X-FILÉ MIGNON E UM GUARANÁ GARRAFINHA
+INSERT INTO venda(cliente_id) VALUES (3);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (17, 2, 3);
+INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (48, 1, 2);
+
+
+-- TRÊS EXEMPLOS DE CONSULTAS SIMPLES
+
+-- 1º - exibe o nome, endereço e telefone de cada cliente cadastrado
+SELECT nome_cliente
+    , telefone_cliente
+    , endereco_cliente 
+    FROM cliente;
+
+-- 2º - exibe o id, nome e preço de cada produto cadastrado
+SELECT id_produto
+    , nome_produto
+    , preco_produto
+    FROM PRODUTO;
+
+-- 3º - apresenta o nome de todas as categorias cadastradas no bd
+SELECT nome_categoria_produto FROM categoria_produto;
+
+
+-- CINCO EXEMPLOS DE CONSULTA UTILIZANDO JOIN
+
+--  1º - procura o nome do cliente e o estado onde mora nos quais o estado for o Paraná.
+SELECT nome_cliente, nome_estado
+    FROM cliente
+    INNER JOIN cidade ON cliente.cidade_id = cidade.id_cidade
+    INNER JOIN estado ON cidade.estado_id = estado.id_estado
+    WHERE nome_estado = "PARANÁ";
+
+-- 2º - seleciona o nome, preço, e nome da categoria dos produtos onde a categoria é = a "SUCO".
+SELECT nome_produto, preco_produto, nome_categoria_produto
+    FROM produto
+    INNER JOIN categoria_produto ON produto.categoria_id = categoria_produto.id_categoria_produto
+    WHERE categoria_produto.nome_categoria_produto = "SUCO";
+
+-- 3º - apresenta o nome do cliente,  os produtos que comprou e a data e hora em que foi feita a venda
+SELECT nome_cliente, nome_produto, data_e_hora_venda
+    FROM cliente
+    INNER JOIN venda ON venda.cliente_id = cliente.id_cliente
+    INNER JOIN item_venda ON venda.id_venda = item_venda.venda_id
+    INNER JOIN produto ON item_venda.produto_id = produto.id_produto;
+
+-- 4º - exibe cada item vendido no estado de São Paulo e seu valor.
+SELECT nome_estado, preco_produto, id_venda
+    FROM venda
+    INNER JOIN item_venda ON item_venda.venda_id = venda.id_venda
+    INNER JOIN produto ON item_venda.produto_id = produto.id_produto
+    INNER JOIN cliente ON cliente.id_cliente = venda.id_venda
+    INNER JOIN cidade ON cliente.cidade_id = cidade.id_cidade
+    INNER JOIN estado ON cidade.estado_id = estado.id_estado
+    WHERE estado.nome_estado = "SÃO PAULO";
+
+-- 5º apresenta apenas a sigla de todos os estados de origem de cada cliente que fez uma compra
+SELECT sigla_estado
+    FROM venda
+    INNER JOIN cliente ON cliente.id_cliente = venda.cliente_id
+    INNER JOIN cidade ON cliente.cidade_id = cidade.id_cidade
+    INNER JOIN estado ON estado.id_estado = cidade.estado_id
+    WHERE venda.id_venda IS NOT NULL AND venda.data_e_hora_venda 
+
+    
+
+-- TRÊS EXEMPLOS DE CONSULTAS UTILIZANDO FUNÇÕES
+
+-- 1º - exibe o valor total das vendas feitas no estado de São Paulo e o nome do estado.
+SELECT nome_estado, sum(preco_produto) 'TOTAL VENDAS'
+    FROM venda
+    INNER JOIN item_venda ON item_venda.venda_id = venda.id_venda
+    INNER JOIN produto ON item_venda.produto_id = produto.id_produto
+    INNER JOIN cliente ON cliente.id_cliente = venda.id_venda
+    INNER JOIN cidade ON cliente.cidade_id = cidade.id_cidade
+    INNER JOIN estado ON cidade.estado_id = estado.id_estado
+    WHERE estado.nome_estado = "SÃO PAULO";
+
+
+
+
 
 
 
