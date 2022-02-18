@@ -79,6 +79,7 @@ CREATE TABLE item_venda(
     id_item_venda INT NOT NULL AUTO_INCREMENT UNIQUE
     ,produto_id INT NOT NULL
     ,quantidade_produto INT NOT NULL
+    ,total NUMERIC NOT NULL
     ,data_e_hora_item_venda DATETIME DEFAULT CURRENT_TIMESTAMP
     ,venda_id INT NOT NULL
     ,CONSTRAINT pk_item_venda PRIMARY KEY item_venda(id_item_venda)
@@ -240,9 +241,9 @@ INSERT INTO produto(nome_produto, preco_produto, categoria_id) VALUES ('SUCO PRA
 INSERT INTO produto(nome_produto, preco_produto, categoria_id) VALUES ('SUCO PRATS 1L', 9.00, 5);
 INSERT INTO produto(nome_produto, preco_produto, categoria_id) VALUES ('SKOL LATA 350ML', 4.00, 6);
 
-INSERT INTO cliente(nome_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('DIOGO MENESES DE FRANÇA', '34697928873', 'RUA MATO GROSSO', '1050', 1);
-INSERT INTO cliente(nome_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('CARLOS EDUARDO DE FRANÇA', '04348706921', 'RUA MATO GROSSO', '1050', 1);
-INSERT INTO cliente(nome_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('ARACELES DE MENESES', '26661568852', 'RUA DOM PEDRO I', '70 C', 10);
+INSERT INTO cliente(nome_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('DIOGO MENESES DE FRANÇA', '12345678910', 'RUA INDAIAL ', '1230', 1);
+INSERT INTO cliente(nome_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('CARLOS EDUARDO DE FRANÇA', '12345678911', 'RUA MATO GROSSO', '1050', 1);
+INSERT INTO cliente(nome_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('ARACELES DE MENESES', '12345678912', 'RUA DOM PEDRO I', '70 C', 10);
 
 -- CRIANDO VENDAS
 
