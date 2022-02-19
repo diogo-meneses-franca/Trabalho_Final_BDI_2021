@@ -242,6 +242,8 @@ INSERT INTO produto(nome_produto, preco_produto, categoria_id) VALUES ('SUCO PRA
 INSERT INTO produto(nome_produto, preco_produto, categoria_id) VALUES ('SUCO PRATS 1L', 9.00, 5);
 INSERT INTO produto(nome_produto, preco_produto, categoria_id) VALUES ('SKOL LATA 350ML', 4.00, 6);
 
+-- CLIENTES
+
 INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('DIOGO MENESES DE FRANÇA', "44991162891", '12345678910', 'RUA INDAIAL ', '1230', 1);
 INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('CARLOS EDUARDO DE FRANÇA', "44991768883", '12345678911', 'RUA MATO GROSSO', '1050', 1);
 INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('ARACELES DE MENESES', "18988022202", '12345678912', 'RUA DOM PEDRO I', '70 C', 10);
