@@ -248,6 +248,7 @@ INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente
 INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('ANDRÉ LUIZ DE ALMEIDA', "47991584678", '12345678913', 'RUA PERNAMBUCO', '257', 7);
 INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('JOÃO DOS SANTOS', "11994755812", '12345678914', 'RUA SERGIPE', '479', 9);
 INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('IRENE FERRAZ', "11987541759", '12345678915', 'AVENIDA JOSÉ BONIFÁCIO', '1630', 9);
+INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('ROSA MARIA DOS SANTOS', "1154574832", '12345678916', 'RUA SANTO ANTONIO', '1326', 9);
 
 -- CRIANDO VENDAS
 
@@ -280,6 +281,8 @@ INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (56, 3, 
 INSERT INTO venda(cliente_id) VALUES (4);
 INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (11, 2, 6);
 INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (51, 1, 6);
+
+
 
 
 -- TRÊS EXEMPLOS DE CONSULTAS SIMPLES
@@ -315,8 +318,8 @@ SELECT nome_produto, preco_produto, nome_categoria_produto
     INNER JOIN categoria_produto ON produto.categoria_id = categoria_produto.id_categoria_produto
     WHERE categoria_produto.nome_categoria_produto = "SUCO";
 
--- 3º - apresenta o nome do cliente,  os produtos que comprou e a data e hora em que foi feita a venda
-SELECT nome_cliente, nome_produto, data_e_hora_venda
+-- 3º - apresenta o nome do cliente,  os produtos que comprou, a quantidade comprada e a data e hora em que foi feita a venda
+SELECT nome_cliente, nome_produto, quantidade_produto, data_e_hora_venda
     FROM cliente
     INNER JOIN venda ON venda.cliente_id = cliente.id_cliente
     INNER JOIN item_venda ON venda.id_venda = item_venda.venda_id
@@ -338,22 +341,21 @@ SELECT sigla_estado
     INNER JOIN cliente ON cliente.id_cliente = venda.cliente_id
     INNER JOIN cidade ON cliente.cidade_id = cidade.id_cidade
     INNER JOIN estado ON estado.id_estado = cidade.estado_id
-    WHERE venda.id_venda IS NOT NULL AND venda.data_e_hora_venda; 
+    WHERE venda.id_venda IS NOT NULL AND venda.data_e_hora_venda
+    GROUP BY sigla_estado; 
 
     
 
 -- TRÊS EXEMPLOS DE CONSULTAS UTILIZANDO FUNÇÕES
 
--- 1º - exibe o valor total das vendas feitas no estado de São Paulo e o nome do estado.
-SELECT nome_estado, sum(preco_produto) 'TOTAL VENDAS SP'
-    FROM venda
+-- 1º - exibe o valor total de cada venda feita para cada cliente, id e nome do cliente que fez a compra.
+SELECT id_cliente, venda_id, nome_cliente 'CLIENTE', SUM(preco_produto*quantidade_produto) 'TOTAL VENDA'
+	FROM venda
     INNER JOIN item_venda ON item_venda.venda_id = venda.id_venda
     INNER JOIN produto ON item_venda.produto_id = produto.id_produto
-    INNER JOIN cliente ON cliente.id_cliente = venda.id_venda
-    INNER JOIN cidade ON cliente.cidade_id = cidade.id_cidade
-    INNER JOIN estado ON cidade.estado_id = estado.id_estado
-    WHERE estado.nome_estado = "SÃO PAULO";
-
+    INNER JOIN cliente ON venda.cliente_id = cliente.id_cliente
+    GROUP BY id_venda;
+    
 -- 2º - exibe juntos o nome da cidade,estado e sigla das cidades e estados da região sul do Brasil
 
 SELECT CONCAT(nome_cidade, '--',nome_estado,'--', sigla_estado) 'CIDADES DA REGIÃO SUL'
@@ -361,11 +363,11 @@ SELECT CONCAT(nome_cidade, '--',nome_estado,'--', sigla_estado) 'CIDADES DA REGI
     INNER JOIN estado ON cidade.estado_id = estado.id_estado
     WHERE estado.nome_estado IN('PARANÁ', 'SANTA CATARINA', 'RIO GRANDE DO SUL');
 
--- exibe a média de venda por cliente dentre todas as vendas do país.
+-- 3º exibe a média de consumo por venda dentre todas as vendas do país.
 
-
-SELECT id_cliente, nome_cliente, (preco_produto*quantidade_produto)
+SELECT id_cliente, venda_id, SUM(preco_produto*quantidade_produto)/COUNT(DISTINCT(id_venda)) 'MÉDIA POR VENDA'
 	FROM venda
     INNER JOIN item_venda ON item_venda.venda_id = venda.id_venda
     INNER JOIN produto ON item_venda.produto_id = produto.id_produto
     INNER JOIN cliente ON venda.cliente_id = cliente.id_cliente;
+    
