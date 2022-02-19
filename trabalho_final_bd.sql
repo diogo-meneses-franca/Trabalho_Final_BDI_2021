@@ -365,9 +365,8 @@ SELECT CONCAT(nome_cidade, '--',nome_estado,'--', sigla_estado) 'CIDADES DA REGI
 
 -- 3º exibe a média de consumo por venda dentre todas as vendas do país.
 
-SELECT id_cliente, venda_id, SUM(preco_produto*quantidade_produto)/COUNT(DISTINCT(id_venda)) 'MÉDIA POR VENDA'
+SELECT id_cliente, venda_id, ROUND(SUM(preco_produto*quantidade_produto)/COUNT(DISTINCT(id_venda)),2) 'MÉDIA POR VENDA'
 	FROM venda
     INNER JOIN item_venda ON item_venda.venda_id = venda.id_venda
     INNER JOIN produto ON item_venda.produto_id = produto.id_produto
     INNER JOIN cliente ON venda.cliente_id = cliente.id_cliente;
-    
