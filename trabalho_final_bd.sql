@@ -349,6 +349,7 @@ SELECT sigla_estado
 -- TRÊS EXEMPLOS DE CONSULTAS UTILIZANDO FUNÇÕES
 
 -- 1º - exibe o valor total de cada venda feita para cada cliente, id e nome do cliente que fez a compra.
+-- A função SUM permite que eu some os valores que serão inseridos dentro dela, assim eu posso apresentar eles somados.
 SELECT id_cliente, venda_id, nome_cliente 'CLIENTE', SUM(preco_produto*quantidade_produto) 'TOTAL VENDA'
 	FROM venda
     INNER JOIN item_venda ON item_venda.venda_id = venda.id_venda
@@ -357,6 +358,7 @@ SELECT id_cliente, venda_id, nome_cliente 'CLIENTE', SUM(preco_produto*quantidad
     GROUP BY id_venda;
     
 -- 2º - exibe juntos o nome da cidade,estado e sigla das cidades e estados da região sul do Brasil
+-- O comando CONCAT permite unir os valores dentro dos () permitindo assim a escolha da maneira que eu quero visualizar os dados no resultado da busca.
 
 SELECT CONCAT(nome_cidade, '--',nome_estado,'--', sigla_estado) 'CIDADES DA REGIÃO SUL'
     FROM cidade
@@ -364,8 +366,13 @@ SELECT CONCAT(nome_cidade, '--',nome_estado,'--', sigla_estado) 'CIDADES DA REGI
     WHERE estado.nome_estado IN('PARANÁ', 'SANTA CATARINA', 'RIO GRANDE DO SUL');
 
 -- 3º exibe a média de consumo por venda dentre todas as vendas do país.
+-- A função FOUND foi utilizada para que eu pudesse aredondar os valores apresentados com apenas duas casas após a virgula;
+-- A função SUM me permitiu somar os valores que eu queria multiplicar, no caso o valor do produto pela quantidade comprada pelo cliente.alter
+-- As funções COUNT E DISTINCT me permitiram contar e o número de id_venda e distintos existentes no resultado.alter
+-- É importante ressaltar que eu escolhi fazer e a soma e dividir pela quantidade para obter a média ao invés de usar apenas a função AVG.
+-- Caso fosse usado a função AVG o valor apresentado seria incorreto pois seria disconsiderada a união dos item_vendas que possuem o mesmo ID.
 
-SELECT id_cliente, venda_id, ROUND(SUM(preco_produto*quantidade_produto)/COUNT(DISTINCT(id_venda)),2) 'MÉDIA POR VENDA'
+SELECT ROUND(SUM(preco_produto*quantidade_produto)/COUNT(DISTINCT(id_venda)),2) 'MÉDIA POR VENDA'
 	FROM venda
     INNER JOIN item_venda ON item_venda.venda_id = venda.id_venda
     INNER JOIN produto ON item_venda.produto_id = produto.id_produto
