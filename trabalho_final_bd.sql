@@ -248,7 +248,6 @@ INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente
 INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('ANDRÉ LUIZ DE ALMEIDA', "47991584678", '12345678913', 'RUA PERNAMBUCO', '257', 7);
 INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('JOÃO DOS SANTOS', "11994755812", '12345678914', 'RUA SERGIPE', '479', 9);
 INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('IRENE FERRAZ', "11987541759", '12345678915', 'AVENIDA JOSÉ BONIFÁCIO', '1630', 9);
-INSERT INTO cliente(nome_cliente,telefone_cliente, cpf_cliente, endereco_cliente, endereco_numero, cidade_id ) VALUES ('ROSA MARIA DOS SANTOS', "1154574832", '12345678916', 'RUA SANTO ANTONIO', '1326', 9);
 
 -- CRIANDO VENDAS
 
@@ -281,11 +280,6 @@ INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (56, 3, 
 INSERT INTO venda(cliente_id) VALUES (4);
 INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (11, 2, 6);
 INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (51, 1, 6);
-
--- ROSA MARIA COMPROU UM X-FILÉ MIGNON E UM GUARANÁ GARRAFINHA
-INSERT INTO venda(cliente_id) VALUES (7);
-INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (17, 2, 3);
-INSERT INTO item_venda(produto_id, quantidade_produto, venda_id) VALUES (48, 1, 2);
 
 
 -- TRÊS EXEMPLOS DE CONSULTAS SIMPLES
